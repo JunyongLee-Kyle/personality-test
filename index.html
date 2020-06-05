@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personality Test</title>
+    <!-- ANIMATE CSS -->
+    <link rel="stylesheet" type="text/css" href="css/animate.css">
+    <!-- FONTAWESOME -->
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <!-- 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <!-- CUSTOM -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5eda39333bf17354"></script>
+
+</head>
+<!-- BODY -->
+
+<body>
+
+    <div class="container text-center">
+        <h1>성격으로 알아보는 운동</h1>
+    </div>
+    <div class="container text-center">
+        <ul id="quiz" class="list-group">
+
+        </ul>
+    </div>
+
+    <div class="container text-center hide results">
+        <img src="https://cdn.pixabay.com/photo/2019/06/08/13/21/football-4260127_960_720.png" class="results col-md-4 col-sm-4 col-xs-4">
+        <img src="https://png.clipart.me/previews/65f/sport-silhouettes-vector-free-27120.png" class="results col-md-4 col-sm-4 col-xs-4">
+        <img src="https://w7.pngwing.com/pngs/622/126/png-transparent-yoga-silhouette-exercise-yoga-physical-fitness-sports-silhouette.png" class="results col-md-4 col-sm-4 col-xs-4">
+    </div>
+
+    <!-- <div class="container progress">
+		<div id="intro-bar" class="progress-bar" style="width: 15%" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+			15%
+		</div>
+		<div id="extro-bar" class="progress-bar bg-success" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+			30%
+		</div>
+	</div> -->
+
+    <div class="container text-center results hide">
+        <p id="results"></p>
+    </div>
+
+    <div class="container text-center bottom">
+        <button id="submit-btn" class="btn btn-primary btn-lg">Submit</button>
+
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                <div class="addthis_inline_share_toolbox"></div>
+            
+        <button id="retake-btn" class="hide btn btn-primary btn-lg">Retake Quiz</button>
+    </div>
+    <!-- SCRIPTS -->
+
+    <!-- JQUERY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- CUSTOM -->
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+       // A personality quiz
+
+// This is an array of objects that stores the personality trait that is prompted to the user and the weight for each prompt. 
+// If a personality trait is considered more introverted, it will have a negative weight.
+// If a personlity trait is considered more extroverted, it will have a positive weight.
+
+var prompts = [
+{
+	prompt: '계획을 세운것은 잘 실행한다.',
+	weight: -1,
+	class: 'group0'
+},
+{
+	prompt: '다른 사람에게 관심이 없다.',
+	weight: -1,
+	class: 'group1'
+},
+{
+	prompt: '지금 내 방이 객관적으로 깨끗한 편이다',
+	weight: -1,
+	class: 'group2'
+},
+{
+	prompt: '기분이 쉽게 자주 변한다',
+	weight: -1,
+	class: 'group3'
+},
+{
+	prompt: '자주 우울해진다.',
+	weight: -1,
+	class: 'group4'
+},
+{
+	prompt: '걱정이 많은 편이다.',
+	weight: -1,
+	class: 'group5'
+},
+{
+	prompt: '행동이 말보다 앞설때가 많다.',
+	weight: 1,
+	class: 'group6'
+},
+{
+	prompt: '모임에서 분위기를 주도하는 편이다.',
+	weight: 1,
+	class: 'group7'
+},
+{
+	prompt: '다른 사람과 대화를 주로 내가 시작하는 편이다.',
+	weight: 1,
+	class: 'group8'
+},
+{
+	prompt: '다른 사람과 대화를 주로 내가 시작하는 편이다.',
+	weight: 1,
+	class: 'group9'
+},
+{
+	prompt: '난 쇼핑을 할때 계획에 없던 물건을 자줏 산다',
+	weight: 1,
+	class: 'group10'
+},
+{
+	prompt: '사람들을 편안하게 해준다.',
+	weight: 1,
+	class: 'group11'
+}
+
+]
+
+// This array stores all of the possible values and the weight associated with the value. 
+// The stronger agreeance/disagreeance, the higher the weight on the user's answer to the prompt.
+var prompt_values = [
+{
+	value: 'ㅆㅇㅈ', 
+	class: 'btn-default btn-strongly-agree',
+	weight: 5
+},
+{
+	value: 'ㅇㅈ',
+	class: 'btn-default btn-agree',
+	weight: 3,
+}, 
+{
+	value: '딱히...보통', 
+	class: 'btn-default',
+	weight: 0
+},
+{
+	value: '응 아니야',
+	class: 'btn-default btn-disagree',
+	weight: -3
+},
+{ 
+	value: '응 매우 아니야',
+	class: 'btn-default btn-strongly-disagree',
+	weight: -5
+}
+]
+
+// For each prompt, create a list item to be inserted in the list group
+function createPromptItems() {
+
+	for (var i = 0; i < prompts.length; i++) {
+		var prompt_li = document.createElement('li');
+		var prompt_p = document.createElement('p');
+		var prompt_text = document.createTextNode(prompts[i].prompt);
+
+		prompt_li.setAttribute('class', 'list-group-item prompt');
+		prompt_p.appendChild(prompt_text);
+		prompt_li.appendChild(prompt_p);
+
+		document.getElementById('quiz').appendChild(prompt_li);
+	}
+}
+
+// For each possible value, create a button for each to be inserted into each li of the quiz
+// function createValueButtons() {
+	
+// 	for (var li_index = 0; li_index < prompts.length; li_index++) {
+// 		for (var i = 0; i < prompt_values.length; i++) {
+// 			var val_button = document.createElement('button');
+// 			var val_text = document.createTextNode(prompt_values[i].value);
+
+// 			val_button.setAttribute('class', 'value-btn btn ' + prompt_values[i].class);
+// 			val_button.appendChild(val_text);
+
+// 			document.getElementsByClassName('prompt')[li_index].appendChild(val_button);
+// 		}
+// 	}
+// }
+function createValueButtons() {
+	for (var li_index = 0; li_index < prompts.length; li_index++) {
+		var group = document.createElement('div');
+		group.className = 'btn-group btn-group-justified';
+
+		for (var i = 0; i < prompt_values.length; i++) {
+			var btn_group = document.createElement('div');
+			btn_group.className = 'btn-group';
+
+			var button = document.createElement('button');
+			var button_text = document.createTextNode(prompt_values[i].value);
+			button.className = 'group' + li_index + ' value-btn btn ' + prompt_values[i].class;
+			button.appendChild(button_text);
+
+			btn_group.appendChild(button);
+			group.appendChild(btn_group);
+
+			document.getElementsByClassName('prompt')[li_index].appendChild(group);
+		}
+	}
+}
+
+createPromptItems();
+createValueButtons();
+
+// Keep a running total of the values they have selected. If the total is negative, the user is introverted. If positive, user is extroverted.
+// Calculation will sum all of the answers to the prompts using weight of the value * the weight of the prompt.
+var total = 0;
+
+// Get the weight associated to group number
+function findPromptWeight(prompts, group) {
+	var weight = 0;
+
+	for (var i = 0; i < prompts.length; i++) {
+		if (prompts[i].class === group) {
+			weight = prompts[i].weight;
+		}
+	}
+
+	return weight;
+}
+
+// Get the weight associated to the value
+function findValueWeight(values, value) {
+	var weight = 0;
+
+	for (var i = 0; i < values.length; i++) {
+		if (values[i].value === value) {
+			weight = values[i].weight;
+		}
+	}
+
+	return weight;
+}
+
+// When user clicks a value to agree/disagree with the prompt, display to the user what they selected
+$('.value-btn').mousedown(function () {
+	var classList = $(this).attr('class');
+	// console.log(classList);
+	var classArr = classList.split(" ");
+	// console.log(classArr);
+	var this_group = classArr[0];
+	// console.log(this_group);
+
+	// If button is already selected, de-select it when clicked and subtract any previously added values to the total
+	// Otherwise, de-select any selected buttons in group and select the one just clicked
+	// And subtract deselected weighted value and add the newly selected weighted value to the total
+	if($(this).hasClass('active')) {
+		$(this).removeClass('active');
+		total -= (findPromptWeight(prompts, this_group) * findValueWeight(prompt_values, $(this).text()));
+	} else {
+		// $('[class='thisgroup).prop('checked', false);
+		total -= (findPromptWeight(prompts, this_group) * findValueWeight(prompt_values, $('.'+this_group+'.active').text()));
+		// console.log($('.'+this_group+'.active').text());
+		$('.'+this_group).removeClass('active');
+
+		// console.log('group' + findValueWeight(prompt_values, $('.'+this_group).text()));
+		// $(this).prop('checked', true);
+		$(this).addClass('active');
+		total += (findPromptWeight(prompts, this_group) * findValueWeight(prompt_values, $(this).text()));
+	}
+
+	console.log(total);
+})
+
+
+
+$('#submit-btn').click(function () {
+	// After clicking submit, add up the totals from answers
+	// For each group, find the value that is active
+	$('.results').removeClass('hide');
+	$('.results').addClass('show');
+	
+	if(total < 0) {
+		// document.getElementById('intro-bar').style.width = ((total / 60) * 100) + '%';
+		// console.log(document.getElementById('intro-bar').style.width);
+		// document.getElementById('intro-bar').innerHTML= ((total / 60) * 100) + '%';
+		document.getElementById('results').innerHTML = '<b>당신은!</b><br><br>\
+		성실한 성격으로 일에 대해서 약속한 것과 무슨 일 이든 완벽함을 추구하여  규칙적인 생활을 하는 편이지만 한편으론 걱정이 많고 늘 안절부절 못하는 성격이어서 살을 빼고 외모를 더 가꾸기 위해 운동하는 경향이 있습니다!.\n\
+<br><br>\
+당신 같은 경우 자신을 외적인 충격이나 스트레스로부터 자기를 지키기위해 혼자서 하는 운동이 효과가 있습니다!\n\
+<br><br>\
+당신에게 추천하는 운동은 헬스, 조깅, 자전거, 요가, 등산 등의 운동이 있습니다.\n\n\
+<br><br>\
+.\
+		';
+	} else if(total > 0) {
+		document.getElementById('results').innerHTML = '<b>당신은!</b><br><br>\
+		생각나는 대로 행동하고 계획 세우는 것을 싫어하고 즉흥적이며  재미를 추구하는 편이고 은근히 사람들과 어울리기 좋아하는 사교적인 성격이 내재되었습니다.\
+<br><br>\
+성실한 성격과는 반대로 언제, 어디에서, 어떻게 등 본인의 운동계획을 자세하게 쓴 후 운동하는 것이 좋고\
+<br><br>\
+당신은 전력질주나 번지점프처럼 활기찬 운동을 좋아하는 경향이 있으며.당신에게 추천하는 운동은 접촉성이 있으며 팀을 이루는 농구, 축구, 럭비, 아이스하키 등이있습니다.';
+	} else {
+		document.getElementById('results').innerHTML = '<b>당신은!</b><br><br>\
+		모든 질문을 같은 답으로 했을 확률이 높습니다!!!\
+<br><br>\
+이는 당신이 해당 테스트를 대충하였거나 말도 안되는 성격의 소유자일 수 있습니다.\
+<br><br>\
+당신은 성실하며서도 충돌적이며 신경질적이며서도 사교적인 성격입니다 (뭔소리지?). 어떠한 운동을 하든 상관없이 다 소화 할수 있습니다.'
+	}
+
+	// Hide the quiz after they submit their results
+	$('#quiz').addClass('hide');
+	$('#submit-btn').addClass('hide');
+	$('#retake-btn').removeClass('hide');
+})
+
+// Refresh the screen to show a new quiz if they click the retake quiz button
+$('#retake-btn').click(function () {
+	$('#quiz').removeClass('hide');
+	$('#submit-btn').removeClass('hide');
+	$('#retake-btn').addClass('hide');
+
+	$('.results').addClass('hide');
+	$('.results').removeClass('show');
+})
+</script>
+</body>
+<!--Copyright (c) 2020 by Danube Phan (https://codepen.io/danubevictoria/pen/WObGGQ)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+</html>
